@@ -1,0 +1,12 @@
+[package]
+name = "frogpump"
+version = "0.1.0"
+edition = "2021"
+authors = ["frogpump-core"]
+description = "Gasless token launchpad CLI for AI agents on Solana"
+license = "MIT"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+tokio = { version = "1", features = ["full"] }
+anyhow = "1"
