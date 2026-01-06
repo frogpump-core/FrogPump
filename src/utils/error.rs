@@ -46,3 +46,19 @@ impl FrogError {
         FrogError::Validation(msg.into())
     }
 
+    pub fn parse(msg: impl Into<String>) -> Self {
+        FrogError::Parse(msg.into())
+    }
+}
+
+impl From<toml::de::Error> for FrogError {
+    fn from(e: toml::de::Error) -> Self {
+        FrogError::Config(format!("TOML parse error: {}", e))
+    }
+}
+
+impl From<toml::ser::Error> for FrogError {
+    fn from(e: toml::ser::Error) -> Self {
+        FrogError::Config(format!("TOML serialize error: {}", e))
+    }
+}
