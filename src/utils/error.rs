@@ -25,3 +25,24 @@ pub enum FrogError {
     #[error("HTTP error: {0}")]
     Http(#[from] reqwest::Error),
 
+    #[error("Serialization error: {0}")]
+    Serialization(#[from] serde_json::Error),
+}
+
+impl FrogError {
+    pub fn api(msg: impl Into<String>) -> Self {
+        FrogError::Api(msg.into())
+    }
+
+    pub fn config(msg: impl Into<String>) -> Self {
+        FrogError::Config(msg.into())
+    }
+
+    pub fn solana(msg: impl Into<String>) -> Self {
+        FrogError::Solana(msg.into())
+    }
+
+    pub fn validation(msg: impl Into<String>) -> Self {
+        FrogError::Validation(msg.into())
+    }
+
