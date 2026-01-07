@@ -126,3 +126,33 @@ pub struct LeaderboardArgs {
     #[arg(long, short, default_value = "volume")]
     pub sort: String,
 
+    /// Number of entries to show
+    #[arg(long, short, default_value_t = 10)]
+    pub limit: usize,
+}
+
+#[derive(Args, Debug)]
+pub struct ConfigCommand {
+    #[command(subcommand)]
+    pub command: ConfigSubcommand,
+}
+
+#[derive(Subcommand, Debug)]
+pub enum ConfigSubcommand {
+    /// Set a configuration value
+    Set {
+        /// Config key (api_base_url, agent_id, network, rpc_url, verbose)
+        key: String,
+        /// Value to set
+        value: String,
+    },
+
+    /// Get a configuration value
+    Get {
+        /// Config key to read
+        key: String,
+    },
+
+    /// Show all configuration values
+    Show,
+}
