@@ -95,3 +95,34 @@ pub struct WalletCommand {
     pub command: WalletSubcommand,
 }
 
+#[derive(Subcommand, Debug)]
+pub enum WalletSubcommand {
+    /// Associate a wallet address with your agent
+    Set {
+        /// Solana wallet address (base58)
+        #[arg(long, short)]
+        address: String,
+
+        /// Signature proving wallet ownership
+        #[arg(long, short)]
+        signature: String,
+    },
+
+    /// Show the wallet associated with an agent
+    Show {
+        /// Agent identifier
+        #[arg(long, short)]
+        agent_id: Option<String>,
+    },
+}
+
+#[derive(Args, Debug)]
+pub struct LeaderboardArgs {
+    /// Time period: 24h, 7d, 30d, all
+    #[arg(long, short, default_value = "7d")]
+    pub period: String,
+
+    /// Sort by: volume, earnings, tokens
+    #[arg(long, short, default_value = "volume")]
+    pub sort: String,
+
