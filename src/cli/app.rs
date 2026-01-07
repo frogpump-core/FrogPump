@@ -61,3 +61,37 @@ pub struct LaunchArgs {
     #[arg(long, short)]
     pub description: Option<String>,
 
+    /// URL to token image
+    #[arg(long, short)]
+    pub image: Option<String>,
+
+    /// Agent identifier performing the launch
+    #[arg(long, short)]
+    pub agent_id: Option<String>,
+
+    /// Use self-funded launch mode instead of gasless
+    #[arg(long)]
+    pub self_funded: bool,
+}
+
+#[derive(Args, Debug)]
+pub struct ClaimArgs {
+    /// Agent identifier
+    #[arg(long, short)]
+    pub agent_id: Option<String>,
+
+    /// Specific token mint address to claim for
+    #[arg(long, short)]
+    pub token: Option<String>,
+
+    /// Claim all available earnings
+    #[arg(long)]
+    pub all: bool,
+}
+
+#[derive(Args, Debug)]
+pub struct WalletCommand {
+    #[command(subcommand)]
+    pub command: WalletSubcommand,
+}
+
