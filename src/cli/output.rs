@@ -42,3 +42,54 @@ struct LeaderboardRow {
     earnings: String,
 }
 
+pub struct OutputFormatter;
+
+impl OutputFormatter {
+    pub fn print_token_table(tokens: &[Token]) {
+        if tokens.is_empty() {
+            println!("{}", "No tokens found.".yellow());
+            return;
+        }
+        let rows: Vec<TokenRow> = tokens
+            .iter()
+            .map(|t| TokenRow {
+                name: t.name.clone(),
+                symbol: t.symbol.clone(),
+                mint_address: display::short_address(&t.mint_address),
+                verified: if t.verified {
+                    "Yes".green().to_string()
+                } else {
+                    "No".red().to_string()
+                },
+            })
+            .collect();
+        println!("{}", Table::new(rows));
+    }
+
+    pub fn print_earnings_summary(earnings: &[Earning]) {
+        if earnings.is_empty() {
+            println!("{}", "No earnings found.".yellow());
+            return;
+        }
+        let total: f64 = earnings.iter().map(|e| e.amount).sum();
+        let unclaimed: f64 = earnings.iter().filter(|e| !e.claimed).map(|e| e.amount).sum();
+        let rows: Vec<EarningRow> = earnings
+            .iter()
+            .map(|e| EarningRow {
+                token_id: display::short_address(&e.token_id),
+                amount: display::format_sol(e.amount),
+                claimed: if e.claimed {
+                    "Yes".green().to_string()
+                } else {
+                    "No".yellow().to_string()
+                },
+            })
+            .collect();
+        println!("{}", Table::new(rows));
+        println!(
+            "\n  Total: {}  |  Unclaimed: {}",
+            display::format_sol(total),
+            display::format_sol(unclaimed)
+        );
+    }
+
