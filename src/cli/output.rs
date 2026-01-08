@@ -93,3 +93,38 @@ impl OutputFormatter {
         );
     }
 
+    pub fn print_leaderboard(entries: &[LeaderboardEntry], period: &str) {
+        display::print_header(&format!("Leaderboard ({})", period));
+        if entries.is_empty() {
+            println!("{}", "  No leaderboard data available.".yellow());
+            return;
+        }
+        let rows: Vec<LeaderboardRow> = entries
+            .iter()
+            .map(|e| LeaderboardRow {
+                rank: display::format_rank(e.rank),
+                token: format!("{} ({})", e.token_name, e.symbol),
+                volume: display::format_sol(e.volume_24h),
+                market_cap: display::format_sol(e.market_cap),
+                earnings: display::format_sol(e.creator_earnings),
+            })
+            .collect();
+        println!("{}", Table::new(rows));
+    }
+
+    pub fn print_stats(stats: &StatsResponse) {
+        display::print_header("Platform Statistics");
+        display::print_key_value("Total Tokens", &stats.total_tokens.to_string());
+        display::print_key_value("Total Earnings", &display::format_sol(stats.total_earnings_sol));
+        display::print_key_value("Active Agents", &stats.active_agents.to_string());
+        display::print_key_value("Volume (24h)", &display::format_sol(stats.volume_24h));
+    }
+
+    pub fn print_success(message: &str) {
+        println!("{} {}", "[OK]".green().bold(), message);
+    }
+
+    pub fn print_error(message: &str) {
+        eprintln!("{} {}", "[ERROR]".red().bold(), message);
+    }
+}
