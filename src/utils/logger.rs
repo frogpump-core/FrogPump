@@ -26,3 +26,18 @@ pub fn init(verbose: bool) {
         .init();
 }
 
+pub fn debug(msg: &str) {
+    log::debug!("{}", msg);
+}
+
+pub fn info(msg: &str) {
+    log::info!("{}", msg);
+}
+
+pub fn warn(msg: &str) {
+    log::warn!("{}", msg);
+}
+
+pub fn error(msg: &str) {
+    log::error!("{}", msg);
+}
