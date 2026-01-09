@@ -28,3 +28,25 @@ fn add_thousands_separator(n: u64) -> String {
     result.chars().rev().collect()
 }
 
+pub fn short_address(addr: &str) -> String {
+    if addr.len() >= 8 {
+        format!("{}...{}", &addr[..4], &addr[addr.len() - 4..])
+    } else {
+        addr.to_string()
+    }
+}
+
+pub fn format_timestamp(ts: &str) -> String {
+    if let Ok(dt) = chrono::DateTime::parse_from_rfc3339(ts) {
+        dt.format("%Y-%m-%d %H:%M:%S UTC").to_string()
+    } else {
+        ts.to_string()
+    }
+}
+
+pub fn print_header(title: &str) {
+    println!();
+    println!("{}", title.bold().green());
+    print_divider();
+}
+
