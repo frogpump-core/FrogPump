@@ -50,3 +50,19 @@ pub fn print_header(title: &str) {
     print_divider();
 }
 
+pub fn print_divider() {
+    println!("{}", "─".repeat(60).dimmed());
+}
+
+pub fn format_rank(rank: u32) -> String {
+    match rank {
+        1 => format!("{} 1st", "Gold".yellow().bold()),
+        2 => format!("{} 2nd", "Silver".white().bold()),
+        3 => format!("{} 3rd", "Bronze".red().bold()),
+        n => format!("#{}", n),
+    }
+}
+
+pub fn print_key_value(key: &str, value: &str) {
+    println!("  {:<20} {}", key.cyan(), value);
+}
