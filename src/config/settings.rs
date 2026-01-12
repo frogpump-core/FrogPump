@@ -87,3 +87,15 @@ impl Settings {
         Ok(())
     }
 
+    pub fn get_value(&self, key: &str) -> Option<String> {
+        match key {
+            "api_base_url" => Some(self.api_base_url.clone()),
+            "agent_id" => self.agent_id.clone(),
+            "wallet_address" => self.wallet_address.clone(),
+            "network" => Some(format!("{:?}", self.network)),
+            "rpc_url" => Some(self.rpc_url.clone()),
+            "verbose" => Some(self.verbose.to_string()),
+            _ => None,
+        }
+    }
+}
