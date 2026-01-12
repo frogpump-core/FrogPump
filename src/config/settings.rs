@@ -51,3 +51,39 @@ impl Settings {
         }
     }
 
+    pub fn save(&self) -> Result<()> {
+        let config_dir = Self::config_dir();
+        fs::create_dir_all(&config_dir)?;
+        let config_path = config_dir.join("config.toml");
+        let content = toml::to_string_pretty(self).map_err(|e| {
+            FrogError::Config(format!("Failed to serialize config: {}", e))
+        })?;
+        fs::write(&config_path, content)?;
+        Ok(())
+    }
+
+    pub fn set_value(&mut self, key: &str, value: &str) -> Result<()> {
+        match key {
+            "api_base_url" => self.api_base_url = value.to_string(),
+            "agent_id" => self.agent_id = Some(value.to_string()),
+            "wallet_address" => self.wallet_address = Some(value.to_string()),
+            "network" => {
+                self.network = match value {
+                    "mainnet" => Network::Mainnet,
+                    "devnet" => Network::Devnet,
+                    "localnet" => Network::Localnet,
+                    _ => return Err(FrogError::Config(format!("Unknown network: {}", value))),
+                };
+                self.rpc_url = self.network.default_rpc().to_string();
+            }
+            "rpc_url" => self.rpc_url = value.to_string(),
+            "verbose" => {
+                self.verbose = value.parse().map_err(|_| {
+                    FrogError::Config("verbose must be true or false".to_string())
+                })?;
+            }
+            _ => return Err(FrogError::Config(format!("Unknown setting: {}", key))),
+        }
+        Ok(())
+    }
+
