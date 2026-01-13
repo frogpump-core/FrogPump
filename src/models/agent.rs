@@ -21,3 +21,18 @@ impl fmt::Display for Agent {
     }
 }
 
+impl Agent {
+    pub fn has_wallet(&self) -> bool {
+        self.wallet_address.is_some()
+    }
+
+    pub fn short_wallet(&self) -> Option<String> {
+        self.wallet_address.as_ref().map(|addr| {
+            if addr.len() >= 8 {
+                format!("{}...{}", &addr[..4], &addr[addr.len() - 4..])
+            } else {
+                addr.clone()
+            }
+        })
+    }
+}
