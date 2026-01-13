@@ -39,3 +39,11 @@ impl Network {
         }
     }
 
+    pub fn default_rpc(&self) -> &str {
+        match self {
+            Network::Mainnet => "https://api.mainnet-beta.solana.com",
+            Network::Devnet => "https://api.devnet.solana.com",
+            Network::Localnet => "http://localhost:8899",
+        }
+    }
+}
