@@ -44,3 +44,24 @@ impl fmt::Display for Token {
     }
 }
 
+impl Token {
+    pub fn short_address(&self) -> String {
+        if self.mint_address.len() >= 8 {
+            format!(
+                "{}...{}",
+                &self.mint_address[..4],
+                &self.mint_address[self.mint_address.len() - 4..]
+            )
+        } else {
+            self.mint_address.clone()
+        }
+    }
+
+    pub fn pump_fun_url(&self) -> String {
+        format!("https://pump.fun/coin/{}", self.mint_address)
+    }
+
+    pub fn is_gasless(&self) -> bool {
+        self.launch_type == LaunchType::Gasless
+    }
+}
