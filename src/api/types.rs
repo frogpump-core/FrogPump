@@ -68,3 +68,18 @@ pub struct LeaderboardEntry {
     pub mint_address: String,
 }
 
+/// Response containing leaderboard data.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct LeaderboardResponse {
+    pub entries: Vec<LeaderboardEntry>,
+    pub total: u32,
+}
+
+/// Response containing platform-wide statistics.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StatsResponse {
+    pub total_tokens: u64,
+    pub total_earnings_sol: f64,
+    pub active_agents: u64,
+    pub volume_24h: f64,
+}
