@@ -28,3 +28,22 @@ pub fn build_url(base: &str, endpoint: &str, params: &[(&str, &str)]) -> String 
         url.push_str(&query.join("&"));
     }
 
+    url
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_build_url_no_params() {
+        let url = build_url(BASE_URL, LAUNCH, &[]);
+        assert_eq!(url, "https://api.frogpump.fun/v1/launch");
+    }
+
+    #[test]
+    fn test_build_url_with_params() {
+        let url = build_url(BASE_URL, LEADERBOARD, &[("period", "7d"), ("limit", "10")]);
+        assert_eq!(url, "https://api.frogpump.fun/v1/leaderboard?period=7d&limit=10");
+    }
+}
