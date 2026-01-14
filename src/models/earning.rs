@@ -31,3 +31,12 @@ impl fmt::Display for Earning {
     }
 }
 
+impl Earning {
+    pub fn is_claimable(&self) -> bool {
+        !self.claimed && self.amount > 0.0
+    }
+
+    pub fn format_amount(&self) -> String {
+        format!("{:.4} SOL", self.amount)
+    }
+}
