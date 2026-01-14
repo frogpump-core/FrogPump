@@ -47,3 +47,24 @@ pub struct ClaimResponse {
     pub tx_signature: String,
 }
 
+/// Request payload for associating a wallet with an agent.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct WalletRequest {
+    pub agent_id: String,
+    pub wallet_address: String,
+    pub signature: String,
+    pub message: String,
+}
+
+/// A single entry on the leaderboard.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct LeaderboardEntry {
+    pub rank: u32,
+    pub token_name: String,
+    pub symbol: String,
+    pub volume_24h: f64,
+    pub market_cap: f64,
+    pub creator_earnings: f64,
+    pub mint_address: String,
+}
+
