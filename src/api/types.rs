@@ -23,3 +23,27 @@ pub struct LaunchResponse {
     pub pump_fun_url: String,
 }
 
+/// Response containing earnings data for an agent.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct EarningsResponse {
+    pub earnings: Vec<Earning>,
+    pub total_earned: f64,
+    pub total_unclaimed: f64,
+}
+
+/// Request payload for claiming earnings.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ClaimRequest {
+    pub agent_id: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub token_id: Option<String>,
+    pub claim_all: bool,
+}
+
+/// Response returned after a successful claim.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ClaimResponse {
+    pub amount: f64,
+    pub tx_signature: String,
+}
+
