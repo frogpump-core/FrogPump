@@ -82,3 +82,44 @@ impl ApiClient {
         );
         debug!("GET {}", url);
 
+        let resp = self.client.get(&url).send().await.context("Failed to fetch earnings")?;
+        let api_resp: ApiResponse<EarningsResponse> = resp.json().await.context("Failed to parse earnings response")?;
+        api_resp.into_result()
+    }
+
+    /// Submit a claim request for agent earnings.
+    pub async fn claim(&self, request: ClaimRequest) -> Result<ClaimResponse> {
+        let url = endpoints::build_url(&self.base_url, endpoints::CLAIM, &[]);
+        debug!("POST {}", url);
+
+        let resp = self.client.post(&url).json(&request).send().await.context("Failed to send claim request")?;
+        let api_resp: ApiResponse<ClaimResponse> = resp.json().await.context("Failed to parse claim response")?;
+        api_resp.into_result()
+    }
+
+    /// Associate a wallet address with an agent.
+    pub async fn set_wallet(&self, request: WalletRequest) -> Result<()> {
+        let url = endpoints::build_url(&self.base_url, endpoints::WALLET, &[]);
+        debug!("POST {}", url);
+
+        let resp = self.client.post(&url).json(&request).send().await.context("Failed to send wallet request")?;
+        let api_resp: ApiResponse<serde_json::Value> = resp.json().await.context("Failed to parse wallet response")?;
+        api_resp.into_result()?;
+        Ok(())
+    }
+
+    /// Fetch the leaderboard with the given filters.
+    pub async fn get_leaderboard(
+        &self,
+        period: &str,
+        sort: &str,
+        limit: usize,
+    ) -> Result<LeaderboardResponse> {
+        let limit_str = limit.to_string();
+        let url = endpoints::build_url(
+            &self.base_url,
+            endpoints::LEADERBOARD,
+            &[("period", period), ("sort", sort), ("limit", &limit_str)],
+        );
+        debug!("GET {}", url);
+
