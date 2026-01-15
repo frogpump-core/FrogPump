@@ -123,3 +123,23 @@ impl ApiClient {
         );
         debug!("GET {}", url);
 
+        let resp = self.client.get(&url).send().await.context("Failed to fetch leaderboard")?;
+        let api_resp: ApiResponse<LeaderboardResponse> = resp.json().await.context("Failed to parse leaderboard response")?;
+        api_resp.into_result()
+    }
+
+    /// Fetch platform-wide statistics.
+    pub async fn get_stats(&self) -> Result<StatsResponse> {
+        let url = endpoints::build_url(&self.base_url, endpoints::STATS, &[]);
+        debug!("GET {}", url);
+
+        let resp = self.client.get(&url).send().await.context("Failed to fetch stats")?;
+        let api_resp: ApiResponse<StatsResponse> = resp.json().await.context("Failed to parse stats response")?;
+        api_resp.into_result()
+    }
+
+    /// Upload a token image and return the hosted URL.
+    pub async fn upload_image(&self, path: &Path) -> Result<String> {
+        let url = endpoints::build_url(&self.base_url, endpoints::UPLOAD, &[]);
+        debug!("POST {} (multipart upload)", url);
+
