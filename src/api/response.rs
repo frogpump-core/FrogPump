@@ -28,3 +28,18 @@ impl<T> ApiResponse<T> {
     }
 }
 
+/// Paginated API response wrapper for list endpoints.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PaginatedResponse<T> {
+    pub data: Vec<T>,
+    pub page: u32,
+    pub per_page: u32,
+    pub total: u32,
+}
+
+impl<T> PaginatedResponse<T> {
+    /// Check if there are more pages available.
+    pub fn has_more(&self) -> bool {
+        (self.page * self.per_page) < self.total
+    }
+}
