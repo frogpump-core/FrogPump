@@ -1,0 +1,30 @@
+use anyhow::{bail, Result};
+use serde::{Deserialize, Serialize};
+
+/// Generic API response wrapper used across all endpoints.
+///
+/// On success, `success` is true and `data` contains the response payload.
+/// On failure, `success` is false and `error` contains a description.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ApiResponse<T> {
+    pub success: bool,
+    pub data: Option<T>,
+    pub error: Option<String>,
+}
+
+impl<T> ApiResponse<T> {
+    /// Convert the API response into a Result, extracting the data on success
+    /// or returning the error message on failure.
+    pub fn into_result(self) -> Result<T> {
+        if self.success {
+            match self.data {
+                Some(data) => Ok(data),
+                None => bail!("API returned success but no data payload"),
+            }
+        } else {
+            let msg = self.error.unwrap_or_else(|| "Unknown API error".to_string());
+            bail!("API error: {}", msg)
+        }
+    }
+}
+
