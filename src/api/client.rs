@@ -43,3 +43,42 @@ impl ApiClient {
         let url = endpoints::build_url(&self.base_url, endpoint, &[]);
         debug!("POST {}", url);
 
+        let resp = self
+            .client
+            .post(&url)
+            .json(&request)
+            .send()
+            .await
+            .context("Failed to send launch request")?;
+
+        let api_resp: ApiResponse<LaunchResponse> = resp
+            .json()
+            .await
+            .context("Failed to parse launch response")?;
+
+        api_resp.into_result()
+    }
+
+    /// Retrieve all tokens launched by the specified agent.
+    pub async fn get_tokens(&self, agent_id: &str) -> Result<Vec<Token>> {
+        let url = endpoints::build_url(
+            &self.base_url,
+            endpoints::TOKENS,
+            &[("agent_id", agent_id)],
+        );
+        debug!("GET {}", url);
+
+        let resp = self.client.get(&url).send().await.context("Failed to fetch tokens")?;
+        let api_resp: ApiResponse<Vec<Token>> = resp.json().await.context("Failed to parse tokens response")?;
+        api_resp.into_result()
+    }
+
+    /// Retrieve earnings data for the specified agent.
+    pub async fn get_earnings(&self, agent_id: &str) -> Result<EarningsResponse> {
+        let url = endpoints::build_url(
+            &self.base_url,
+            endpoints::EARNINGS,
+            &[("agent_id", agent_id)],
+        );
+        debug!("GET {}", url);
+
