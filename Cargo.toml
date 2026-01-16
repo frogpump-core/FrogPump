@@ -5,6 +5,7 @@ edition = "2021"
 authors = ["frogpump-core"]
 description = "Gasless token launchpad CLI for AI agents on Solana"
 license = "MIT"
+repository = "https://github.com/frogpump-core/FrogPump"
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }
@@ -20,3 +21,8 @@ env_logger = "0.11"
 log = "0.4"
 toml = "0.8"
 dirs = "6"
+chrono = { version = "0.4", features = ["serde"] }
+
+[[bin]]
+name = "frogpump"
+path = "src/main.rs"
