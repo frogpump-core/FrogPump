@@ -143,3 +143,28 @@ impl ApiClient {
         let url = endpoints::build_url(&self.base_url, endpoints::UPLOAD, &[]);
         debug!("POST {} (multipart upload)", url);
 
+        let file_bytes = tokio::fs::read(path)
+            .await
+            .context(format!("Failed to read image file: {}", path.display()))?;
+
+        let file_name = path
+            .file_name()
+            .and_then(|n| n.to_str())
+            .unwrap_or("image.png")
+            .to_string();
+
+        let part = multipart::Part::bytes(file_bytes).file_name(file_name);
+        let form = multipart::Form::new().part("file", part);
+
+        let resp = self
+            .client
+            .post(&url)
+            .multipart(form)
+            .send()
+            .await
+            .context("Failed to upload image")?;
+
+        let api_resp: ApiResponse<String> = resp.json().await.context("Failed to parse upload response")?;
+        api_resp.into_result()
+    }
+}
