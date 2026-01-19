@@ -52,3 +52,22 @@ impl TokenBuilder {
         validator::validate_token_name(&self.name)?;
         validator::validate_symbol(&self.symbol)?;
 
+        let agent_id = match self.agent_id {
+            Some(id) => id,
+            None => bail!("Agent ID is required to build a launch request"),
+        };
+
+        validator::validate_agent_id(&agent_id)?;
+
+        let self_funded = matches!(self.launch_type, LaunchType::SelfFunded);
+
+        Ok(LaunchRequest {
+            name: self.name,
+            symbol: self.symbol,
+            description: self.description,
+            image_url: self.image_url,
+            agent_id,
+            self_funded,
+        })
+    }
+}
