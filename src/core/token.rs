@@ -27,3 +27,28 @@ impl TokenBuilder {
         }
     }
 
+    pub fn description(mut self, description: Option<String>) -> Self {
+        self.description = description;
+        self
+    }
+
+    pub fn image_url(mut self, image_url: Option<String>) -> Self {
+        self.image_url = image_url;
+        self
+    }
+
+    pub fn agent_id(mut self, agent_id: String) -> Self {
+        self.agent_id = Some(agent_id);
+        self
+    }
+
+    pub fn launch_type(mut self, launch_type: LaunchType) -> Self {
+        self.launch_type = launch_type;
+        self
+    }
+
+    /// Validate all fields and build the final LaunchRequest.
+    pub fn build(self) -> Result<LaunchRequest> {
+        validator::validate_token_name(&self.name)?;
+        validator::validate_symbol(&self.symbol)?;
+
