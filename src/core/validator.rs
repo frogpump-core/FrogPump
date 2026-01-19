@@ -29,3 +29,20 @@ pub fn validate_symbol(symbol: &str) -> Result<()> {
         );
     }
 
+    Ok(())
+}
+
+/// Validate a Solana address: base58-encoded string of 32-44 characters.
+pub fn validate_solana_address(address: &str) -> Result<()> {
+    if address.len() < 32 || address.len() > 44 {
+        bail!(
+            "Solana address must be 32-44 characters, got {}",
+            address.len()
+        );
+    }
+
+    let base58_chars = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+    if !address.chars().all(|c| base58_chars.contains(c)) {
+        bail!("Solana address contains invalid base58 characters: '{}'", address);
+    }
+
