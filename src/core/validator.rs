@@ -46,3 +46,21 @@ pub fn validate_solana_address(address: &str) -> Result<()> {
         bail!("Solana address contains invalid base58 characters: '{}'", address);
     }
 
+    Ok(())
+}
+
+/// Validate an agent identifier: non-empty, 1-64 characters, alphanumeric with hyphens/underscores.
+pub fn validate_agent_id(id: &str) -> Result<()> {
+    if id.is_empty() || id.len() > 64 {
+        bail!("Agent ID must be between 1 and 64 characters, got {}", id.len());
+    }
+
+    if !id.chars().all(|c| c.is_alphanumeric() || c == '-' || c == '_') {
+        bail!(
+            "Agent ID must contain only alphanumeric characters, hyphens, and underscores: '{}'",
+            id
+        );
+    }
+
+    Ok(())
+}
