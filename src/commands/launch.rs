@@ -49,3 +49,24 @@ pub async fn execute(args: LaunchArgs, config: &Settings) -> Result<()> {
         .await
         .context("Token launch failed")?;
 
+    spinner.finish_and_clear();
+
+    OutputFormatter::print_success(&format!(
+        "Token {} ({}) launched successfully!",
+        args.name, args.symbol
+    ));
+    display::print_key_value("Mint address", &response.mint_address);
+    display::print_key_value("Transaction", &display::short_address(&response.tx_signature));
+    display::print_key_value("Agent", &agent_id);
+    display::print_key_value(
+        "Launch type",
+        if args.self_funded {
+            "Self-Funded"
+        } else {
+            "Gasless"
+        },
+    );
+    display::print_key_value("View on pump.fun", &response.pump_fun_url);
+
+    Ok(())
+}
