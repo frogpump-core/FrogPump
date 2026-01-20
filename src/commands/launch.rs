@@ -34,3 +34,18 @@ pub async fn execute(args: LaunchArgs, config: &Settings) -> Result<()> {
     spinner.set_message(format!("Launching {} ({})...", args.name, args.symbol));
     spinner.enable_steady_tick(Duration::from_millis(100));
 
+    let api = ApiClient::new(&config.api_base_url);
+    let engine = LaunchEngine::new(api, config.clone());
+
+    let response = engine
+        .execute_launch(
+            args.name.clone(),
+            args.symbol.clone(),
+            args.description,
+            args.image,
+            Some(agent_id.clone()),
+            args.self_funded,
+        )
+        .await
+        .context("Token launch failed")?;
+
