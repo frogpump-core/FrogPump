@@ -56,3 +56,42 @@ impl LaunchEngine {
 
         info!("Launching token {} ({}) for agent {}", request.name, request.symbol, agent_id);
 
+        if self_funded {
+            self.execute_self_funded(request).await
+        } else {
+            self.execute_gasless(request).await
+        }
+    }
+
+    /// Execute a gasless launch through the platform's sponsored transaction flow.
+    async fn execute_gasless(&self, request: LaunchRequest) -> Result<LaunchResponse> {
+        info!("Using gasless launch mode");
+        self.api
+            .launch(request)
+            .await
+            .context("Gasless launch failed")
+    }
+
+    /// Execute a self-funded launch where the agent pays transaction fees.
+    async fn execute_self_funded(&self, mut request: LaunchRequest) -> Result<LaunchResponse> {
+        info!("Using self-funded launch mode");
+        request.self_funded = true;
+        self.api
+            .launch(request)
+            .await
+            .context("Self-funded launch failed")
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_engine_creation() {
+        let api = ApiClient::new("https://api.frogpump.fun/v1");
+        let config = Settings::default();
+        let engine = LaunchEngine::new(api, config);
+        assert!(engine.config.agent_id.is_none());
+    }
+}
