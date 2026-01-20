@@ -37,3 +37,22 @@ impl LaunchEngine {
             .or_else(|| self.config.agent_id.clone())
             .context("Agent ID is required. Set it via --agent-id or in config.")?;
 
+        validator::validate_token_name(&name)?;
+        validator::validate_symbol(&symbol)?;
+        validator::validate_agent_id(&agent_id)?;
+
+        let launch_type = if self_funded {
+            LaunchType::SelfFunded
+        } else {
+            LaunchType::Gasless
+        };
+
+        let request = TokenBuilder::new(name, symbol)
+            .description(description)
+            .image_url(image_url)
+            .agent_id(agent_id.clone())
+            .launch_type(launch_type)
+            .build()?;
+
+        info!("Launching token {} ({}) for agent {}", request.name, request.symbol, agent_id);
+
