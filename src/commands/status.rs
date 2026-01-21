@@ -23,3 +23,26 @@ pub async fn execute(agent_id: Option<String>, config: &Settings) -> Result<()> 
         .await
         .context("Failed to fetch tokens")?;
 
+    let earnings_resp = api
+        .get_earnings(&agent_id)
+        .await
+        .context("Failed to fetch earnings")?;
+
+    display::print_header(&format!("Status for agent: {}", agent_id));
+    display::print_key_value("Tokens launched", &tokens.len().to_string());
+    display::print_key_value("Total earned", &display::format_sol(earnings_resp.total_earned));
+    display::print_key_value(
+        "Unclaimed",
+        &display::format_sol(earnings_resp.total_unclaimed),
+    );
+    println!();
+
+    OutputFormatter::print_token_table(&tokens);
+
+    if !earnings_resp.earnings.is_empty() {
+        println!();
+        OutputFormatter::print_earnings_summary(&earnings_resp.earnings);
+    }
+
+    Ok(())
+}
