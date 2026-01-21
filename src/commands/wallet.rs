@@ -28,3 +28,25 @@ pub async fn execute_set(address: String, signature: String, config: &Settings) 
         message: format!("frogpump:verify:{}", agent_id),
     };
 
+    api.set_wallet(request)
+        .await
+        .context("Failed to set wallet")?;
+
+    OutputFormatter::print_success(&format!(
+        "Wallet {} associated with agent {}",
+        display::short_address(&address),
+        agent_id
+    ));
+
+    Ok(())
+}
+
+pub async fn execute_show(agent_id: Option<String>, config: &Settings) -> Result<()> {
+    let agent_id = match agent_id.or_else(|| config.agent_id.clone()) {
+        Some(id) => {
+            validate_agent_id(&id).map_err(|e| anyhow::anyhow!("{}", e))?;
+            id
+        }
+        None => anyhow::bail!("Agent ID required. Pass --agent-id or set it in config."),
+    };
+
