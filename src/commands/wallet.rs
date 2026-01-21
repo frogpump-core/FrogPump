@@ -50,3 +50,14 @@ pub async fn execute_show(agent_id: Option<String>, config: &Settings) -> Result
         None => anyhow::bail!("Agent ID required. Pass --agent-id or set it in config."),
     };
 
+    let wallet = config
+        .wallet_address
+        .as_deref()
+        .unwrap_or("(not set)");
+
+    display::print_header("Wallet Info");
+    display::print_key_value("Agent", &agent_id);
+    display::print_key_value("Wallet", wallet);
+
+    Ok(())
+}
