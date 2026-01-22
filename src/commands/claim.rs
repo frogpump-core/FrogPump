@@ -59,3 +59,27 @@ pub async fn execute(args: ClaimArgs, config: &Settings) -> Result<()> {
         );
     }
 
+    print!("  Proceed? [y/N] ");
+    io::stdout().flush()?;
+    let mut input = String::new();
+    io::stdin().read_line(&mut input)?;
+    if !input.trim().eq_ignore_ascii_case("y") {
+        println!("  Claim cancelled.");
+        return Ok(());
+    }
+
+    let response = if let Some(ref token) = args.token {
+        collector.claim_token(&agent_id, token).await?
+    } else {
+        collector.claim_all(&agent_id).await?
+    };
+
+    OutputFormatter::print_success(&format!(
+        "Claimed {} for agent {}",
+        display::format_sol(response.amount),
+        agent_id,
+    ));
+    display::print_key_value("Transaction", &display::short_address(&response.tx_signature));
+
+    Ok(())
+}
