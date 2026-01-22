@@ -23,3 +23,26 @@ pub async fn execute(agent_id: Option<String>, verbose: bool, config: &Settings)
 
     display::print_header(&format!("Tokens for agent: {}", agent_id));
 
+    OutputFormatter::print_token_table(&tokens);
+
+    if verbose {
+        for token in &tokens {
+            println!();
+            display::print_divider();
+            println!("  {} ({})", token.name, token.symbol);
+            display::print_key_value("Mint", &token.mint_address);
+            display::print_key_value("Launch type", &token.launch_type.to_string());
+            if let Some(ref desc) = token.description {
+                display::print_key_value("Description", desc);
+            }
+            if let Some(ref img) = token.image_url {
+                display::print_key_value("Image", img);
+            }
+            display::print_key_value("Created", &display::format_timestamp(&token.created_at));
+        }
+    }
+
+    println!("\n  Total: {} token(s)", tokens.len());
+
+    Ok(())
+}
