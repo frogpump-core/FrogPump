@@ -42,3 +42,32 @@ impl FeeCollector {
             claim_all: true,
         };
 
+        self.api
+            .claim(request)
+            .await
+            .context("Failed to claim all earnings")
+    }
+
+    /// Claim earnings for a specific token by its ID.
+    pub async fn claim_token(&self, agent_id: &str, token_id: &str) -> Result<ClaimResponse> {
+        let request = ClaimRequest {
+            agent_id: agent_id.to_string(),
+            token_id: Some(token_id.to_string()),
+            claim_all: false,
+        };
+
+        self.api
+            .claim(request)
+            .await
+            .context(format!("Failed to claim earnings for token {}", token_id))
+    }
+
+    /// Calculate the total unclaimed amount from a slice of earnings.
+    pub fn total_unclaimed(earnings: &[Earning]) -> f64 {
+        earnings
+            .iter()
+            .filter(|e| !e.claimed)
+            .map(|e| e.amount)
+            .sum()
+    }
+}
