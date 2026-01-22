@@ -13,3 +13,15 @@ pub async fn execute(config: &Settings) -> Result<()> {
         .await
         .context("Failed to fetch platform stats")?;
 
+    println!();
+    OutputFormatter::print_stats(&stats);
+
+    display::print_key_value(
+        "Network",
+        &format!("{:?}", config.network),
+    );
+    display::print_key_value("RPC", &config.rpc_url);
+    println!();
+
+    Ok(())
+}
