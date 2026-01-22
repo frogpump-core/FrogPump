@@ -32,3 +32,30 @@ pub async fn execute(args: ClaimArgs, config: &Settings) -> Result<()> {
         return Ok(());
     }
 
+    let total = FeeCollector::total_unclaimed(&unclaimed);
+
+    // Determine what to claim
+    if args.token.is_none() && !args.all {
+        anyhow::bail!("Specify --token <mint> or --all to claim earnings.");
+    }
+
+    if let Some(ref token) = args.token {
+        let matching: Vec<_> = unclaimed.iter().filter(|e| e.token_id == *token).collect();
+        if matching.is_empty() {
+            anyhow::bail!("No unclaimed earnings found for token {}.", token);
+        }
+        let token_total: f64 = matching.iter().map(|e| e.amount).sum();
+        println!(
+            "  About to claim {} for token {}",
+            display::format_sol(token_total),
+            display::short_address(token)
+        );
+    } else {
+        println!(
+            "  About to claim {} across {} earning(s) for agent {}",
+            display::format_sol(total),
+            unclaimed.len(),
+            agent_id
+        );
+    }
+
