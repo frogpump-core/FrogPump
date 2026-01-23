@@ -33,3 +33,28 @@ pub fn execute_get(key: &str) -> Result<()> {
         }
     }
 
+    Ok(())
+}
+
+pub fn execute_show() -> Result<()> {
+    let settings = Settings::load().unwrap_or_default();
+
+    display::print_header("Configuration");
+    display::print_key_value("api_base_url", &settings.api_base_url);
+    display::print_key_value(
+        "agent_id",
+        settings.agent_id.as_deref().unwrap_or("(not set)"),
+    );
+    display::print_key_value(
+        "wallet_address",
+        settings
+            .wallet_address
+            .as_deref()
+            .unwrap_or("(not set)"),
+    );
+    display::print_key_value("network", &format!("{:?}", settings.network));
+    display::print_key_value("rpc_url", &settings.rpc_url);
+    display::print_key_value("verbose", &settings.verbose.to_string());
+
+    Ok(())
+}
