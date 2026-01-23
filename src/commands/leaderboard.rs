@@ -16,3 +16,14 @@ pub async fn execute(args: LeaderboardArgs, config: &Settings) -> Result<()> {
         .await
         .context("Failed to fetch leaderboard")?;
 
+    OutputFormatter::print_leaderboard(&response.entries, &period);
+
+    println!(
+        "\n  Sorted by: {}  |  Showing {} of {} entries",
+        args.sort.cyan(),
+        response.entries.len(),
+        response.total
+    );
+
+    Ok(())
+}
