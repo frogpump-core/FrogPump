@@ -57,3 +57,23 @@ impl SolanaConnection {
         Ok(result.is_ok())
     }
 
+    /// Get the SOL balance for the given address in SOL (not lamports).
+    pub async fn get_balance(&self, address: &str) -> Result<f64> {
+        let resp = self.rpc_request("getBalance", json!([address])).await?;
+        let lamports = resp["result"]["value"]
+            .as_u64()
+            .context("Invalid balance response")?;
+        Ok(lamports as f64 / 1_000_000_000.0)
+    }
+
+    /// Get a recent blockhash for transaction signing.
+    pub async fn get_recent_blockhash(&self) -> Result<String> {
+        let resp = self
+            .rpc_request("getLatestBlockhash", json!([{"commitment": "finalized"}]))
+            .await?;
+        let blockhash = resp["result"]["value"]["blockhash"]
+            .as_str()
+            .context("Invalid blockhash response")?;
+        Ok(blockhash.to_string())
+    }
+
