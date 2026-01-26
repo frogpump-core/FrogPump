@@ -32,3 +32,28 @@ impl SolanaConnection {
             "params": params,
         });
 
+        debug!("RPC {} -> {}", method, self.rpc_url);
+
+        let resp = self
+            .client
+            .post(&self.rpc_url)
+            .json(&body)
+            .send()
+            .await
+            .context(format!("RPC request failed: {}", method))?;
+
+        let json: Value = resp.json().await.context("Failed to parse RPC response")?;
+
+        if let Some(error) = json.get("error") {
+            bail!("RPC error ({}): {}", method, error);
+        }
+
+        Ok(json)
+    }
+
+    /// Check if the RPC node is healthy and reachable.
+    pub async fn health_check(&self) -> Result<bool> {
+        let result = self.rpc_request("getHealth", json!([])).await;
+        Ok(result.is_ok())
+    }
+
