@@ -37,3 +37,8 @@ async fn main() {
         Commands::Stats => commands::stats::execute(&config).await,
     };
 
+    if let Err(e) = result {
+        error!("{}", e);
+        std::process::exit(1);
+    }
+}
