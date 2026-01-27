@@ -1,3 +1,4 @@
 pub mod connection;
-pub mod keypair;
+pub mod transaction;
 pub mod wallet;
+pub mod keypair;
