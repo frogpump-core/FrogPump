@@ -77,3 +77,32 @@ impl SolanaConnection {
         Ok(blockhash.to_string())
     }
 
+    /// Confirm whether a transaction has been finalized on-chain.
+    pub async fn confirm_transaction(&self, signature: &str) -> Result<bool> {
+        let resp = self
+            .rpc_request(
+                "getSignatureStatuses",
+                json!([[signature], {"searchTransactionHistory": true}]),
+            )
+            .await?;
+
+        let statuses = resp["result"]["value"]
+            .as_array()
+            .context("Invalid signature status response")?;
+
+        if let Some(status) = statuses.first() {
+            if status.is_null() {
+                return Ok(false);
+            }
+            let err = status.get("err");
+            Ok(err.is_none() || err == Some(&Value::Null))
+        } else {
+            Ok(false)
+        }
+    }
+
+    /// Get the WebSocket URL derived from the RPC URL.
+    pub fn ws_url(&self) -> Option<&str> {
+        self.ws_url.as_deref()
+    }
+}
