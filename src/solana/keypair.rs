@@ -33,3 +33,28 @@ pub fn bytes_from_pubkey(address: &str) -> Result<Vec<u8>> {
         );
     }
 
+    Ok(bytes)
+}
+
+/// Encode a 64-byte secret keypair (secret + public) to base58.
+pub fn keypair_to_base58(secret: &[u8; 64]) -> String {
+    bs58::encode(secret).into_string()
+}
+
+/// Decode a base58-encoded keypair string back into 64 raw bytes.
+pub fn keypair_from_base58(encoded: &str) -> Result<[u8; 64]> {
+    let bytes = bs58::decode(encoded)
+        .into_vec()
+        .context("Invalid base58 keypair")?;
+
+    if bytes.len() != 64 {
+        bail!(
+            "Decoded keypair is {} bytes, expected 64",
+            bytes.len()
+        );
+    }
+
+    let mut keypair = [0u8; 64];
+    keypair.copy_from_slice(&bytes);
+    Ok(keypair)
+}
