@@ -1,31 +1,48 @@
 [package]
 name = "frogpump"
-version = "0.4.0"
+version = "1.0.0"
 edition = "2021"
 authors = ["frogpump-core"]
 description = "Gasless token launchpad CLI for AI agents on Solana"
 license = "MIT"
 repository = "https://github.com/frogpump-core/FrogPump"
+readme = "README.md"
+keywords = ["solana", "token", "launchpad", "cli", "gasless"]
+categories = ["command-line-utilities", "cryptography::cryptocurrencies"]
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }
 tokio = { version = "1", features = ["full"] }
-reqwest = { version = "0.12", features = ["json", "multipart"] }
-anyhow = "1"
-thiserror = "2"
+reqwest = { version = "0.12", features = ["json"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 colored = "2"
 tabled = "0.16"
-env_logger = "0.11"
-log = "0.4"
+indicatif = "0.17"
+anyhow = "1"
+thiserror = "2"
+chrono = { version = "0.4", features = ["serde"] }
 toml = "0.8"
 dirs = "6"
-chrono = { version = "0.4", features = ["serde"] }
-indicatif = "0.17"
 bs58 = "0.5"
 ed25519-dalek = "2"
+env_logger = "0.11"
+log = "0.4"
 
 [[bin]]
 name = "frogpump"
 path = "src/main.rs"
+
+[lib]
+name = "frogpump"
+path = "src/lib.rs"
+
+[profile.release]
+opt-level = 3
+lto = true
+strip = true
+codegen-units = 1
+
+[profile.dev]
+opt-level = 0
+debug = true
