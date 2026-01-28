@@ -44,3 +44,32 @@ impl TransactionBuilder {
         self
     }
 
+    /// Set the fee payer's public key for the transaction.
+    pub fn set_fee_payer(&mut self, pubkey: [u8; 32]) -> &mut Self {
+        self.fee_payer = Some(pubkey);
+        self
+    }
+
+    /// Set the recent blockhash for the transaction.
+    pub fn set_recent_blockhash(&mut self, hash: String) -> &mut Self {
+        self.recent_blockhash = Some(hash);
+        self
+    }
+
+    /// Sign the transaction message with the provided keypair bytes.
+    ///
+    /// The keypair should be 64 bytes: 32-byte secret key followed by 32-byte public key.
+    pub fn sign(&mut self, keypair: &[u8; 64]) -> Result<&mut Self> {
+        use ed25519_dalek::{Signer, SigningKey};
+
+        let secret_bytes: [u8; 32] = keypair[..32]
+            .try_into()
+            .map_err(|_| anyhow::anyhow!("Invalid keypair: could not extract secret key"))?;
+
+        let signing_key = SigningKey::from_bytes(&secret_bytes);
+        let message = self.build_message()?;
+        let signature = signing_key.sign(&message);
+        self.signatures.push(signature.to_bytes().to_vec());
+        Ok(self)
+    }
+
