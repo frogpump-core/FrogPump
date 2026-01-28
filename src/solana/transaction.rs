@@ -113,3 +113,36 @@ impl TransactionBuilder {
         message.push(num_readonly_signed);
         message.push(num_readonly_unsigned);
 
+        // Fee payer
+        if let Some(ref payer) = self.fee_payer {
+            message.extend_from_slice(payer);
+        }
+
+        // Blockhash
+        if let Some(ref hash) = self.recent_blockhash {
+            message.extend_from_slice(hash.as_bytes());
+        }
+
+        // Instructions (simplified encoding)
+        message.push(self.instructions.len() as u8);
+        for ix in &self.instructions {
+            message.extend_from_slice(&ix.program_id);
+            message.push(ix.accounts.len() as u8);
+            for acct in &ix.accounts {
+                message.extend_from_slice(&acct.pubkey);
+                message.push(u8::from(acct.is_signer));
+                message.push(u8::from(acct.is_writable));
+            }
+            message.push(ix.data.len() as u8);
+            message.extend_from_slice(&ix.data);
+        }
+
+        Ok(message)
+    }
+}
+
+impl Default for TransactionBuilder {
+    fn default() -> Self {
+        Self::new()
+    }
+}
