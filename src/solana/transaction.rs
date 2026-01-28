@@ -73,3 +73,43 @@ impl TransactionBuilder {
         Ok(self)
     }
 
+    /// Build the serialized transaction bytes.
+    ///
+    /// Returns a simplified byte representation. In production, this would
+    /// produce a fully Solana-compatible binary transaction.
+    pub fn build(&self) -> Result<Vec<u8>> {
+        if self.instructions.is_empty() {
+            bail!("Transaction must have at least one instruction");
+        }
+        if self.fee_payer.is_none() {
+            bail!("Transaction must have a fee payer");
+        }
+        if self.recent_blockhash.is_none() {
+            bail!("Transaction must have a recent blockhash");
+        }
+
+        let message = self.build_message()?;
+        let mut tx_bytes = Vec::new();
+
+        // Compact array length for signatures
+        tx_bytes.push(self.signatures.len() as u8);
+        for sig in &self.signatures {
+            tx_bytes.extend_from_slice(sig);
+        }
+        tx_bytes.extend_from_slice(&message);
+
+        Ok(tx_bytes)
+    }
+
+    /// Build the transaction message (the signable payload).
+    fn build_message(&self) -> Result<Vec<u8>> {
+        let mut message = Vec::new();
+
+        // Simplified message header
+        let num_required_signatures: u8 = 1;
+        let num_readonly_signed: u8 = 0;
+        let num_readonly_unsigned: u8 = 0;
+        message.push(num_required_signatures);
+        message.push(num_readonly_signed);
+        message.push(num_readonly_unsigned);
+
