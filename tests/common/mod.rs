@@ -25,3 +25,25 @@ pub fn mock_agent() -> Agent {
     }
 }
 
+pub fn mock_earning() -> Earning {
+    Earning {
+        id: "earn_001".to_string(),
+        token_id: "tok_001".to_string(),
+        agent_id: "agent_001".to_string(),
+        amount: 1.2345,
+        claimed: false,
+        claimed_at: None,
+        created_at: "2026-01-20T12:00:00Z".to_string(),
+    }
+}
+
+pub fn mock_settings() -> Settings {
+    Settings {
+        api_base_url: "https://api.frogpump.com".to_string(),
+        agent_id: Some("agent_001".to_string()),
+        wallet_address: Some("9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM".to_string()),
+        network: Network::Devnet,
+        rpc_url: "https://api.devnet.solana.com".to_string(),
+        verbose: false,
+    }
+}
