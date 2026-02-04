@@ -32,3 +32,28 @@ mod tests {
         assert!(display.contains("Self-Funded"));
     }
 
+    #[test]
+    fn test_token_is_gasless() {
+        let gasless = build_token("G", "G", LaunchType::Gasless);
+        let funded = build_token("F", "F", LaunchType::SelfFunded);
+        assert!(gasless.is_gasless());
+        assert!(!funded.is_gasless());
+    }
+
+    #[test]
+    fn test_token_short_address() {
+        let token = build_token("T", "T", LaunchType::Gasless);
+        let short = token.short_address();
+        assert!(short.starts_with("7xKX"));
+        assert!(short.ends_with("gAsU"));
+        assert!(short.contains("..."));
+    }
+
+    #[test]
+    fn test_token_pump_fun_url() {
+        let token = build_token("T", "T", LaunchType::Gasless);
+        let url = token.pump_fun_url();
+        assert!(url.starts_with("https://pump.fun/coin/"));
+        assert!(url.contains(&token.mint_address));
+    }
+}
