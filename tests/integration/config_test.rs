@@ -28,3 +28,31 @@ mod tests {
         assert!(result.is_err());
     }
 
+    #[test]
+    fn test_settings_get_unknown_key() {
+        let settings = Settings::default();
+        assert!(settings.get_value("unknown").is_none());
+    }
+
+    #[test]
+    fn test_network_config_urls() {
+        let mainnet = Network::Mainnet.config();
+        assert_eq!(mainnet.name, "mainnet-beta");
+        assert!(mainnet.rpc_url.contains("mainnet"));
+
+        let devnet = Network::Devnet.config();
+        assert_eq!(devnet.name, "devnet");
+        assert!(devnet.rpc_url.contains("devnet"));
+
+        let localnet = Network::Localnet.config();
+        assert_eq!(localnet.name, "localnet");
+        assert!(localnet.rpc_url.contains("localhost"));
+    }
+
+    #[test]
+    fn test_network_default_rpc() {
+        assert!(Network::Mainnet.default_rpc().contains("mainnet"));
+        assert!(Network::Devnet.default_rpc().contains("devnet"));
+        assert!(Network::Localnet.default_rpc().contains("localhost"));
+    }
+}
