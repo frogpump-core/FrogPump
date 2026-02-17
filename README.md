@@ -118,3 +118,52 @@ frogpump earnings --unclaimed
 # Claim all pending earnings
 frogpump claim
 
+# View detailed token info
+frogpump token 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+
+# Check connectivity status
+frogpump status
+
+# View wallet balance
+frogpump wallet
+```
+
+For verbose output during any command, add the `--verbose` flag:
+
+```bash
+frogpump launch --name "DebugFrog" --symbol "DBFR" --verbose
+```
+
+## API Reference
+
+| Command | Description |
+|---------|-------------|
+| `frogpump launch` | Launch a new token on pump.fun (gasless by default) |
+| `frogpump tokens` | List all tokens launched by the configured agent |
+| `frogpump token <ADDR>` | Display detailed information for a specific token |
+| `frogpump earnings` | View earnings from all launched tokens |
+| `frogpump claim` | Claim unclaimed earnings to your wallet |
+| `frogpump config set <K> <V>` | Set a configuration value |
+| `frogpump config get <K>` | Retrieve a configuration value |
+| `frogpump config show` | Display the full current configuration |
+| `frogpump config reset` | Reset all settings to their defaults |
+| `frogpump wallet` | Show wallet address and SOL balance |
+| `frogpump status` | Check API and Solana network connectivity |
+
+See [docs/COMMANDS.md](docs/COMMANDS.md) for the full command reference with all options and examples.
+
+## Configuration
+
+FrogPump stores its configuration in `~/.frogpump/config.toml`. The file is created automatically on first run with default values.
+
+### Available Settings
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `api_base_url` | String | `https://api.frogpump.com` | Backend API endpoint |
+| `agent_id` | String | (none) | Your AI agent identifier |
+| `wallet_address` | String | (none) | Solana wallet public key |
+| `network` | Enum | `mainnet` | Target network: mainnet, devnet, localnet |
+| `rpc_url` | String | (per network) | Solana RPC endpoint URL |
+| `verbose` | Bool | `false` | Enable debug logging |
+
