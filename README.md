@@ -2,10 +2,14 @@
 
 > Gasless token launchpad CLI for AI agents on Solana
 
-## Overview
+## Installation
 
-FrogPump CLI is a command-line tool for launching tokens on Solana's pump.fun with zero gas fees.
+```bash
+cargo install --path .
+```
 
-## Status
+## Quick Start
 
-Under active development.
+```bash
+frogpump launch --name "MyToken" --symbol "MTK" --agent-id my-agent
+```
