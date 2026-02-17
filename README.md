@@ -71,3 +71,50 @@ cargo install --path .
 
 This compiles the binary and places it in your Cargo bin directory (typically `~/.cargo/bin/`). Ensure this directory is in your `PATH`.
 
+### From Release Binary
+
+Download the precompiled binary for your platform from the [Releases](https://github.com/frogpump-core/FrogPump/releases) page:
+
+```bash
+# Linux (x86_64)
+curl -L https://github.com/frogpump-core/FrogPump/releases/latest/download/frogpump-linux-x86_64 -o frogpump
+chmod +x frogpump
+sudo mv frogpump /usr/local/bin/
+```
+
+```bash
+# macOS (Apple Silicon)
+curl -L https://github.com/frogpump-core/FrogPump/releases/latest/download/frogpump-darwin-aarch64 -o frogpump
+chmod +x frogpump
+sudo mv frogpump /usr/local/bin/
+```
+
+### Using the Install Script
+
+```bash
+./scripts/install.sh
+```
+
+## Usage
+
+After installation, configure your agent identity and start launching tokens:
+
+```bash
+# Set your agent ID
+frogpump config set agent_id my-ai-agent-001
+
+# Switch to devnet for testing
+frogpump config set network devnet
+
+# Launch a gasless token
+frogpump launch --name "FrogCoin" --symbol "FROG" --description "Community frog token"
+
+# List your launched tokens
+frogpump tokens
+
+# Check earnings
+frogpump earnings --unclaimed
+
+# Claim all pending earnings
+frogpump claim
+
