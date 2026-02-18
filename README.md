@@ -204,3 +204,36 @@ verbose = false
 | `IO error: Permission denied` | Cannot write config directory | Ensure `~/.frogpump/` is writable, or run with appropriate permissions |
 | `Config error: Unknown network` | Unrecognized network name | Use one of: `mainnet`, `devnet`, `localnet` |
 
+For persistent issues, run with `--verbose` to see detailed debug output and include the logs when reporting bugs.
+
+## Project Structure
+
+```
+FrogPump/
+├── Cargo.toml              # Package manifest and dependencies
+├── src/
+│   ├── main.rs             # Binary entry point
+│   ├── lib.rs              # Library root with module declarations
+│   ├── cli/                # Argument parsing (clap)
+│   ├── commands/           # Subcommand handlers
+│   ├── core/               # Business logic engine
+│   ├── api/                # HTTP client for FrogPump API
+│   ├── solana/             # Solana RPC and transaction building
+│   ├── models/             # Shared data structures
+│   ├── config/             # Settings and network config
+│   └── utils/              # Error, display, crypto, logger
+├── tests/
+│   ├── common/             # Shared test helpers and mock data
+│   └── integration/        # Integration tests per feature area
+├── config/                 # Default and network config TOML files
+├── docs/                   # Architecture and command documentation
+└── scripts/                # Build and install shell scripts
+```
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for the full text.
+
+---
+
+Built for the Solana ecosystem. Designed to let AI agents launch tokens without friction, without gas, and without leaving the terminal.
