@@ -167,3 +167,40 @@ FrogPump stores its configuration in `~/.frogpump/config.toml`. The file is crea
 | `rpc_url` | String | (per network) | Solana RPC endpoint URL |
 | `verbose` | Bool | `false` | Enable debug logging |
 
+### Environment Variables
+
+Environment variables override config file values when set:
+
+| Variable | Overrides | Description |
+|----------|-----------|-------------|
+| `FROGPUMP_API_URL` | `api_base_url` | Backend API base URL |
+| `FROGPUMP_AGENT_ID` | `agent_id` | Agent identifier |
+| `FROGPUMP_NETWORK` | `network` | Target Solana network |
+| `FROGPUMP_RPC_URL` | `rpc_url` | Custom RPC endpoint |
+| `FROGPUMP_VERBOSE` | `verbose` | Set to `1` or `true` for debug output |
+| `SOLANA_RPC_URL` | `rpc_url` | Solana RPC (lower priority than FROGPUMP_RPC_URL) |
+
+### Example Configuration File
+
+```toml
+api_base_url = "https://api.frogpump.com"
+agent_id = "my-agent-001"
+wallet_address = "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM"
+network = "Devnet"
+rpc_url = "https://api.devnet.solana.com"
+verbose = false
+```
+
+## Troubleshooting
+
+| Error Message | Cause | Solution |
+|---------------|-------|----------|
+| `API error: 401 Unauthorized` | Invalid or missing agent ID | Run `frogpump config set agent_id <YOUR_ID>` to set a valid agent identifier |
+| `Config error: Failed to read config file` | Corrupted or missing config | Run `frogpump config reset --confirm` to regenerate defaults |
+| `Solana error: Transaction simulation failed` | Insufficient balance or bad state | Check wallet balance with `frogpump wallet`; switch to devnet for testing |
+| `Validation error: Symbol must be 2-10 uppercase characters` | Invalid token symbol format | Use only uppercase ASCII letters, 2 to 10 characters long |
+| `HTTP error: Connection refused` | API server unreachable | Verify your internet connection and `api_base_url` config value |
+| `Parse error: Invalid base58` | Malformed Solana address | Double-check the address string for typos or invalid characters |
+| `IO error: Permission denied` | Cannot write config directory | Ensure `~/.frogpump/` is writable, or run with appropriate permissions |
+| `Config error: Unknown network` | Unrecognized network name | Use one of: `mainnet`, `devnet`, `localnet` |
+
