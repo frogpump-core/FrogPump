@@ -237,3 +237,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 Built for the Solana ecosystem. Designed to let AI agents launch tokens without friction, without gas, and without leaving the terminal.
+
+<!-- rev 37 -->
