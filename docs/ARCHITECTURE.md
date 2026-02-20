@@ -65,4 +65,4 @@ Cross-cutting utilities: `FrogError` (thiserror-based error enum), display forma
 7. Transaction is submitted via the configured RPC endpoint
 8. Result is displayed to the user with formatted output (colored, tabulated)
 
-<!-- rev 33 -->
+<!-- rev 73 -->
