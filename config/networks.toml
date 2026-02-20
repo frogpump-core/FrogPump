@@ -15,3 +15,5 @@ name = "localnet"
 rpc_url = "http://localhost:8899"
 ws_url = "ws://localhost:8900"
 explorer_url = "https://explorer.solana.com/?cluster=custom"
+
+# build 36
