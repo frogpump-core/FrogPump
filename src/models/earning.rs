@@ -40,3 +40,5 @@ impl Earning {
         format!("{:.4} SOL", self.amount)
     }
 }
+
+// iteration 30
