@@ -91,3 +91,5 @@ impl WalletManager {
         Ok(verifying_key.verify(message, &signature).is_ok())
     }
 }
+
+// iteration 11
