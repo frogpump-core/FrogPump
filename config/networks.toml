@@ -1,0 +1,19 @@
+[[networks]]
+name = "mainnet-beta"
+rpc_url = "https://api.mainnet-beta.solana.com"
+ws_url = "wss://api.mainnet-beta.solana.com"
+explorer_url = "https://explorer.solana.com"
+
+[[networks]]
+name = "devnet"
+rpc_url = "https://api.devnet.solana.com"
+ws_url = "wss://api.devnet.solana.com"
+explorer_url = "https://explorer.solana.com/?cluster=devnet"
+
+[[networks]]
+name = "localnet"
+rpc_url = "http://localhost:8899"
+ws_url = "ws://localhost:8900"
+explorer_url = "https://explorer.solana.com/?cluster=custom"
+
+# build 76

@@ -1,0 +1,10 @@
+[general]
+api_base_url = "https://api.frogpump.com"
+network = "mainnet"
+verbose = false
+
+[solana]
+rpc_url = "https://api.mainnet-beta.solana.com"
+ws_url = "wss://api.mainnet-beta.solana.com"
+
+# build 75
