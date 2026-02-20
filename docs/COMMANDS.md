@@ -227,4 +227,4 @@ frogpump status
 - Configured agent ID
 - Wallet connection status
 
-<!-- rev 34 -->
+<!-- rev 74 -->
