@@ -41,4 +41,4 @@ impl Earning {
     }
 }
 
-// iteration 30
+// iteration 70
