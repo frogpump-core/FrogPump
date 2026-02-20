@@ -64,3 +64,5 @@ Cross-cutting utilities: `FrogError` (thiserror-based error enum), display forma
 6. For gasless launches, the backend co-signs; for self-funded, the local wallet signs
 7. Transaction is submitted via the configured RPC endpoint
 8. Result is displayed to the user with formatted output (colored, tabulated)
+
+<!-- rev 33 -->
