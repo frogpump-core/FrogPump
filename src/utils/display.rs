@@ -66,3 +66,5 @@ pub fn format_rank(rank: u32) -> String {
 pub fn print_key_value(key: &str, value: &str) {
     println!("  {:<20} {}", key.cyan(), value);
 }
+
+// iteration 24
