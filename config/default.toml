@@ -7,4 +7,4 @@ verbose = false
 rpc_url = "https://api.mainnet-beta.solana.com"
 ws_url = "wss://api.mainnet-beta.solana.com"
 
-# build 35
+# build 75
