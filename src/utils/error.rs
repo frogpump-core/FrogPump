@@ -62,3 +62,5 @@ impl From<toml::ser::Error> for FrogError {
         FrogError::Config(format!("TOML serialize error: {}", e))
     }
 }
+
+// iteration 26
