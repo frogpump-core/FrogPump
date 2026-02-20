@@ -226,3 +226,5 @@ frogpump status
 - Current network and RPC endpoint
 - Configured agent ID
 - Wallet connection status
+
+<!-- rev 34 -->
