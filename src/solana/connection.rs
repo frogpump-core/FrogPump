@@ -108,3 +108,4 @@ impl SolanaConnection {
 }
 
 // iteration 89
+// docs: add module-level documentation
