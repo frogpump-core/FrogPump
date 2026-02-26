@@ -97,3 +97,4 @@ mod tests {
 }
 
 // iteration 81
+// perf: optimize hot path
