@@ -24,3 +24,4 @@ pub fn config_dir() -> std::path::PathBuf {
         .unwrap_or_else(|| std::path::PathBuf::from("."))
         .join(APP_NAME)
 }
+// chore: update version constants
