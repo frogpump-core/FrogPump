@@ -64,3 +64,4 @@ impl From<toml::ser::Error> for FrogError {
 }
 
 // iteration 66
+// refactor: simplify error conversion
